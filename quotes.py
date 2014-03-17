@@ -23,9 +23,7 @@ QUOTE_KEYS = ['Name', 'symbol', 'Symbol', 'StockExchange', 'LastTradePriceOnly',
 
 app = Flask(__name__)
 
-@app.route('/')
-@app.route('/<symbol>')
-def hello_world(symbol='KO'):
+def getStockData(symbol):
     url = urllib.parse.urlencode({
         'q': 'select * from yahoo.finance.quotes where symbol = "{s}"'.format(s=symbol),
         'format': 'json',
@@ -34,7 +32,13 @@ def hello_world(symbol='KO'):
     url = 'http://query.yahooapis.com/v1/public/yql?' + url
 
     jsonResp = urllib.request.urlopen(url).read().decode(encoding='UTF-8')
-
     data = json.loads(jsonResp)["query"]["results"]["quote"]
-
+    
+    return data
+                                                         
+@app.route('/')
+@app.route('/<symbol>')
+def main(symbol='KO'):
+    data = getStockData(symbol)
+    
     return render_template('main.html', data=data, keys = QUOTE_KEYS)
