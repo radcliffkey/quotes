@@ -8,8 +8,10 @@
 
 <body>
 {% for key in keys %}
-    {{key}}: {{data[key]}} <br/>
+    {% if key in data and data[key] is not none%}
+        {{key}}: {{data[key]}} <br/>
+    {% endif %}
 {% endfor %}
 </body>
 
-</html> 
+</html>
