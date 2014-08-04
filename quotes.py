@@ -7,7 +7,10 @@ import urllib.request
 import urllib.parse
 import json
 
-QUOTE_KEYS = ['Name', 'symbol', 'Symbol', 'StockExchange', 'LastTradePriceOnly', 'TradeDate', 'LastTradeDate', 'LastTradeTime',
+from datetime import date, timedelta
+
+QUOTE_KEYS = ['Name', 'symbol', 'Symbol', 'StockExchange', 'LastTradePriceOnly',
+              'TradeDate', 'LastTradeDate', 'LastTradeTime',
               'Change', 'ChangeRealtime', 'DaysValueChange', 'ChangePercentRealtime', 'ChangeinPercent', 'PercentChange',
               'DaysValueChangeRealtime', 'AfterHoursChangeRealtime', 'DaysHigh', 'DaysLow', 'DaysRange',
               'DaysRangeRealtime', 'ExDividendDate',
@@ -17,13 +20,31 @@ QUOTE_KEYS = ['Name', 'symbol', 'Symbol', 'StockExchange', 'LastTradePriceOnly',
               'TwoHundreddayMovingAverage', 'ChangeFromTwoHundreddayMovingAverage',
               'PercentChangeFromTwoHundreddayMovingAverage',
                'MarketCapRealtime', 'MarketCapitalization',
-              'Open', 'PERatio', 'PERatioRealtime', 'PreviousClose', 'BookValue', 'PriceBook', 'PriceSales', 'Volume', 'AverageDailyVolume',
+              'Open', 'PERatio', 'PERatioRealtime', 'PreviousClose', 'BookValue', 'PriceBook', 'PriceSales',
+              'Volume', 'AverageDailyVolume',
               'YearHigh', 'ChangeFromYearHigh', 'PercebtChangeFromYearHigh', 'YearLow', 'ChangeFromYearLow',
               'PercentChangeFromYearLow', 'YearRange']
 
 app = Flask(__name__)
 
-def getStockData(symbol):
+def getHistStockData(symbol, startDate, endDate):
+    formatArgs = {"symbol" : symbol, "startDate": startDate.isoformat(), "endDate": endDate.isoformat()}
+    
+    query = '''select * from yahoo.finance.historicaldata 
+               where symbol = "{symbol}" 
+               and startDate = "{startDate}" and endDate = "{endDate}"'''.format()
+               
+    url = urllib.parse.urlencode({
+        'q': query,
+        'format': 'json',
+        'env': 'store://datatables.org/alltableswithkeys'
+    })
+    url = 'http://query.yahooapis.com/v1/public/yql?' + url
+
+    jsonResp = urllib.request.urlopen(url).read().decode(encoding='UTF-8')
+    data = json.loads(jsonResp)["query"]["results"]["quote"]
+    
+def getCurrentStockData(symbol):
     url = urllib.parse.urlencode({
         'q': 'select * from yahoo.finance.quotes where symbol = "{s}"'.format(s=symbol),
         'format': 'json',
@@ -39,6 +60,11 @@ def getStockData(symbol):
 @app.route('/')
 @app.route('/<symbol>')
 def main(symbol='KO'):
-    data = getStockData(symbol)
+    data = getCurrentStockData(symbol)
     
-    return render_template('main.html', data=data, keys = QUOTE_KEYS)
+    today = date.today()
+    startDate = date - timedelta(weeks = 4)
+    
+    histData = getHistStockData(symbol, startDate, today)
+    
+    return render_template('main.html', data=data, keys = QUOTE_KEYS, histData = histData)
