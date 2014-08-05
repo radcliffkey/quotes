@@ -13,7 +13,9 @@
     {% endif %}
 {% endfor %}
 
-{{histData}}
+{% for dayData in histData %}
+        Date: {{dayData['Date']}} Close: {{dayData['Close']}} Volume: {{dayData['Volume']}} <br/>
+{% endfor %}
 </body>
 
 </html>

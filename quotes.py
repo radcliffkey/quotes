@@ -29,11 +29,11 @@ app = Flask(__name__)
 
 def getHistStockData(symbol, startDate, endDate):
     formatArgs = {"symbol" : symbol, "startDate": startDate.isoformat(), "endDate": endDate.isoformat()}
-    
-    query = '''select * from yahoo.finance.historicaldata 
-               where symbol = "{symbol}" 
-               and startDate = "{startDate}" and endDate = "{endDate}"'''.format()
-               
+
+    query = '''select * from yahoo.finance.historicaldata
+               where symbol = "{symbol}"
+               and startDate = "{startDate}" and endDate = "{endDate}"'''.format(**formatArgs)
+
     url = urllib.parse.urlencode({
         'q': query,
         'format': 'json',
@@ -43,7 +43,9 @@ def getHistStockData(symbol, startDate, endDate):
 
     jsonResp = urllib.request.urlopen(url).read().decode(encoding='UTF-8')
     data = json.loads(jsonResp)["query"]["results"]["quote"]
-    
+
+    return data
+
 def getCurrentStockData(symbol):
     url = urllib.parse.urlencode({
         'q': 'select * from yahoo.finance.quotes where symbol = "{s}"'.format(s=symbol),
@@ -54,17 +56,17 @@ def getCurrentStockData(symbol):
 
     jsonResp = urllib.request.urlopen(url).read().decode(encoding='UTF-8')
     data = json.loads(jsonResp)["query"]["results"]["quote"]
-    
+
     return data
-                                                         
+
 @app.route('/')
 @app.route('/<symbol>')
 def main(symbol='KO'):
     data = getCurrentStockData(symbol)
-    
+
     today = date.today()
-    startDate = date - timedelta(weeks = 4)
-    
+    startDate = today - timedelta(weeks = 26)
+
     histData = getHistStockData(symbol, startDate, today)
-    
+
     return render_template('main.html', data=data, keys = QUOTE_KEYS, histData = histData)
