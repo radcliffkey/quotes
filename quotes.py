@@ -15,11 +15,8 @@ QUOTE_KEYS = ['Name', 'symbol', 'Symbol', 'StockExchange', 'LastTradePriceOnly',
               'DaysValueChangeRealtime', 'AfterHoursChangeRealtime', 'DaysHigh', 'DaysLow', 'DaysRange',
               'DaysRangeRealtime', 'ExDividendDate',
               'DividendPayDate', 'DividendShare', 'DividendYield', 'EarningsShare',
-              'ErrorIndicationreturnedforsymbolchangedinvalid', 'FiftydayMovingAverage',
-              'ChangeFromFiftydayMovingAverage', 'PercentChangeFromFiftydayMovingAverage',
-              'TwoHundreddayMovingAverage', 'ChangeFromTwoHundreddayMovingAverage',
-              'PercentChangeFromTwoHundreddayMovingAverage',
-               'MarketCapRealtime', 'MarketCapitalization',
+              'ErrorIndicationreturnedforsymbolchangedinvalid',
+              'MarketCapRealtime', 'MarketCapitalization',
               'Open', 'PERatio', 'PERatioRealtime', 'PreviousClose', 'BookValue', 'PriceBook', 'PriceSales',
               'Volume', 'AverageDailyVolume',
               'YearHigh', 'ChangeFromYearHigh', 'PercebtChangeFromYearHigh', 'YearLow', 'ChangeFromYearLow',
@@ -72,6 +69,10 @@ def getCurrentStockData(symbol):
 def hasDataError(data):
     return ERROR_KEY in data and data[ERROR_KEY] is not None
 
+def avg(nums):
+    cnt = len(nums)
+    return sum(nums) / float(cnt) if cnt != 0 else 0.0
+
 @app.route('/')
 @app.route('/<symbol>')
 def main(symbol='KO'):
@@ -83,12 +84,22 @@ def main(symbol='KO'):
             app.logger.error(data['ErrorIndicationreturnedforsymbolchangedinvalid'])
         flask.abort(404)
 
+    currPrice = float(data['LastTradePriceOnly'])
+
     today = date.today()
-    startDate = today - timedelta(weeks = 26)
+    startDate = today - timedelta(days = 366)
 
     histData = getHistStockData(symbol, startDate, today)
+    daysToDma = {}
 
     if histData is None:
         app.logger.error('API did not return any historical data for ' + symbol)
+    else:
+        histPrices = [float(dayData['Close']) for dayData in histData]
+        daysToDma = {cnt : (avg(histPrices[:cnt])) for cnt in [20, 50, 100, 200]}
+        app.logger.error(daysToDma)
+        dmaDiffPct = {cnt : 100 * (currPrice - dmaVal) / dmaVal for (cnt, dmaVal) in daysToDma.items()}
 
-    return render_template('main.html', data=data, keys = QUOTE_KEYS, histData = histData)
+    debug = {}
+
+    return render_template('main.html', data=data, keys = QUOTE_KEYS, histData = histData, dma = daysToDma, dmaDiffPct = dmaDiffPct, currPrice = currPrice, debug = debug)

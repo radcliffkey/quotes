@@ -1,7 +1,24 @@
+{% macro colorClass(number) -%}
+    {% if number > 0 -%}
+green
+    {%- else -%}
+red
+    {%- endif -%}
+{%- endmacro %}
+
 <!DOCTYPE html>
 <html>
 
 <head>
+<style>
+.green {
+    color: #009900;
+}
+
+.red {
+    color: #BB0000;
+}
+</style>
 <meta charset="UTF-8">
 <title>Quote: {{data.Symbol}}</title>
 </head>
@@ -16,10 +33,17 @@
 {% if histData is none %}
 Historical data for {{data.Symbol}} not available.
 {% else %}
+    {% for (dmaDays, dmaVal) in dma | dictsort %}
+        {{dmaDays}} DMA: {{"%.2f" | format(dmaVal)}},
+        diff: <span class="{{colorClass(dmaDiffPct[dmaDays])}}">{{"%.2f%%" | format(dmaDiffPct[dmaDays])}}</span>
+        <br/>
+    {% endfor %}
     {% for dayData in histData %}
-            Date: {{dayData['Date']}} Close: {{dayData['Close']}} Volume: {{dayData['Volume']}} <br/>
+        Date: {{dayData['Date']}} Close: {{dayData['Close']}} Volume: {{dayData['Volume']}} <br/>
     {% endfor %}
 {% endif %}
+
+{{debug}}
 </body>
 
 </html>
