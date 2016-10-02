@@ -3,11 +3,14 @@
 import flask
 from flask import Flask
 from flask import render_template
+import os.path
 import urllib.request
 import urllib.parse
 import json
 
 from datetime import date, timedelta
+
+PFOLIO_FILE_PATH = os.path.join(os.path.dirname(__file__), 'data', 'pfolio.json')
 
 QUOTE_KEYS = ['Name', 'symbol', 'Symbol', 'StockExchange', 'LastTradePriceOnly',
               'TradeDate', 'LastTradeDate', 'LastTradeTime',
@@ -76,7 +79,7 @@ def avg(nums):
 @app.route('/pfolio')
 def pfolio():
     totalValue = 0
-    with open('data/pfolio.json') as dataFile:
+    with open(PFOLIO_FILE_PATH) as dataFile:
         pfolioData = json.load(dataFile)
     for position in pfolioData['positions']:
         posQuote = getCurrentStockData(position['symbol'])
