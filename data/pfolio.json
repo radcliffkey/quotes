@@ -1,0 +1,14 @@
+{
+"positions": [
+{
+    "symbol": "GLD",
+    "count": 20,
+    "tags": ["gold_silver", "gold", "commodities"]
+},
+{
+    "symbol": "SLW",
+    "count": 200,
+    "tags": ["gold_silver", "silver", "stocks"]
+}
+]
+}

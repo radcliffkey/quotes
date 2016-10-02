@@ -1,5 +1,5 @@
+# coding=utf-8
 
-# A very simple Flask Hello World app for you to get started with...
 import flask
 from flask import Flask
 from flask import render_template
@@ -73,9 +73,25 @@ def avg(nums):
     cnt = len(nums)
     return sum(nums) / float(cnt) if cnt != 0 else 0.0
 
+@app.route('/pfolio')
+def pfolio():
+    totalValue = 0
+    with open('data/pfolio.json') as dataFile:
+        pfolioData = json.load(dataFile)
+    for position in pfolioData['positions']:
+        posQuote = getCurrentStockData(position['symbol'])
+        if posQuote:
+            price = float(posQuote['LastTradePriceOnly'])
+            positionValue = position['count'] * price
+            position['price'] = price
+            position['value'] = positionValue
+            totalValue += positionValue
+    pfolioData['totalValue'] = totalValue
+    return render_template('pfolio.html', data=pfolioData)
+
 @app.route('/')
 @app.route('/<symbol>')
-def main(symbol='KO'):
+def quote(symbol='KO'):
     data = getCurrentStockData(symbol)
 
     if data is None or hasDataError(data):
@@ -103,3 +119,9 @@ def main(symbol='KO'):
     debug = {}
 
     return render_template('main.html', data=data, keys = QUOTE_KEYS, histData = histData, dma = daysToDma, dmaDiffPct = dmaDiffPct, currPrice = currPrice, debug = debug)
+
+def main():
+    app.run(host='0.0.0.0')
+
+if __name__ == '__main__':
+    main()

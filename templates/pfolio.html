@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<style>
+.numericCol {
+    text-align: right;
+}
+</style>
+<meta charset="UTF-8">
+<title>Sample portfolio</title>
+</head>
+
+<body>
+<h2>Total value: ${{data['totalValue']}}</h2>
+
+<table>
+
+{% for position in data['positions']  %}
+    <tr>
+    <td>{{position['symbol']}}</td>
+    <td class="numericCol">{{position['count']}}</td>
+    <td class="numericCol">${{position['price']}}</td>
+    <td class="numericCol">${{position['value']}}</td>
+    <td>{{position['tags'] | join(', ')}}</td>
+    </tr>
+{% endfor %}
+</table>
+
+<p>
+
+</p>
+
+</body>
+
+</html>
