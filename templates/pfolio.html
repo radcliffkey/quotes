@@ -19,8 +19,8 @@
     <tr>
     <td>{{position['symbol']}}</td>
     <td class="numericCol">{{ position['count'] }}</td>
-    <td class="numericCol">${{ position['price'] | round(2) }}</td>
-    <td class="numericCol">${{ position['value'] | round(2) }}</td>
+    <td class="numericCol">${{ '{:.2f}'.format(position['price']) }}</td>
+    <td class="numericCol">${{ '{:.2f}'.format(position['value']) }}</td>
     <td>{{position['tags'] | join(', ')}}</td>
     </tr>
 {% endfor %}
