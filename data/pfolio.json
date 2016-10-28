@@ -4,11 +4,82 @@
     "symbol": "GLD",
     "count": 20,
     "tags": ["gold_silver", "gold", "commodities"]
-},
-{
+}, {
     "symbol": "SLW",
     "count": 200,
-    "tags": ["gold_silver", "silver", "stocks"]
+    "tags": ["gold_silver", "silver", "mining", "stocks"]
+}, {
+    "symbol": "VWO",
+    "count": 95,
+    "tags": ["emerging", "stocks"]
+}, {
+    "symbol": "BRF",
+    "count": 100,
+    "tags": ["emerging", "Brazil", "small_cap", "stocks"]
+}, {
+    "symbol": "AUSE",
+    "count": 85,
+    "tags": ["developed", "Australia", "dividend", "stocks"]
+}, {
+    "symbol": "VSS",
+    "count": 28,
+    "tags": ["ex_US", "small_cap", "stocks"]
+}, {
+    "symbol": "AUNZ",
+    "count": 220,
+    "tags": ["Australia", "New_Zealand", "bonds"]
+}, {
+    "symbol": "CCJ",
+    "count": 200,
+    "tags": ["uranium", "mining", "stocks"]
+}, {
+    "symbol": "DSUM",
+    "count": 60,
+    "tags": ["China", "bonds"]
+}, {
+    "symbol": "GDX",
+    "count": 200,
+    "tags": ["gold_silver", "gold", "mining", "stocks"]
+}, {
+    "symbol": "IBM",
+    "count": 12,
+    "tags": ["US", "technology", "stocks"]
+}, {
+    "symbol": "VEA",
+    "count": 90,
+    "tags": ["developed", "stocks"]
+}, {
+    "symbol": "DVYA",
+    "count": 82,
+    "tags": ["Asia_Pacific", "stocks"]
+}, {
+    "symbol": "DBA",
+    "count": 0,
+    "tags": ["agriculture", "commodities"]
+}, {
+    "symbol": "VNQI",
+    "count": 64,
+    "tags": ["ex_US", "real_estate"]
+}, {
+    "symbol": "PLND",
+    "count": 150,
+    "tags": ["Poland", "emerging", "stocks"]
+}, {
+    "symbol": "BOND",
+    "count": 33,
+    "tags": ["acive_fund", "bonds"]
+}, {
+    "symbol": "SLV",
+    "count": 200,
+    "tags": ["gold_silver", "silver", "commodities"]
+}, {
+    "symbol": "SLVP",
+    "count": 300,
+    "tags": ["gold_silver", "silver", "mining", "stocks"]
+}, {
+    "symbol": "URA",
+    "count": 120,
+    "tags": ["uranium", "mining", "stocks", "commodities"]
 }
 ]
 }

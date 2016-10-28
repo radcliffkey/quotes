@@ -12,16 +12,15 @@
 </head>
 
 <body>
-<h2>Total value: ${{data['totalValue']}}</h2>
+<h2>Total value: ${{ data['totalValue'] | round(2) }}</h2>
 
 <table>
-
 {% for position in data['positions']  %}
     <tr>
     <td>{{position['symbol']}}</td>
-    <td class="numericCol">{{position['count']}}</td>
-    <td class="numericCol">${{position['price']}}</td>
-    <td class="numericCol">${{position['value']}}</td>
+    <td class="numericCol">{{ position['count'] }}</td>
+    <td class="numericCol">${{ position['price'] | round(2) }}</td>
+    <td class="numericCol">${{ position['value'] | round(2) }}</td>
     <td>{{position['tags'] | join(', ')}}</td>
     </tr>
 {% endfor %}
