@@ -9,6 +9,8 @@ import urllib.parse
 import json
 
 from datetime import date, timedelta
+from collections import Counter, OrderedDict
+from operator import itemgetter
 
 PFOLIO_FILE_PATH = os.path.join(os.path.dirname(__file__), 'data', 'pfolio.json')
 
@@ -24,6 +26,8 @@ QUOTE_KEYS = ['Name', 'symbol', 'Symbol', 'StockExchange', 'LastTradePriceOnly',
               'Volume', 'AverageDailyVolume',
               'YearHigh', 'ChangeFromYearHigh', 'PercebtChangeFromYearHigh', 'YearLow', 'ChangeFromYearLow',
               'PercentChangeFromYearLow', 'YearRange']
+
+SELECTED_TAGS = ['stocks', 'bonds', 'gold_silver', 'commodities', 'real_estate', 'mining']
 
 ERROR_KEY = 'ErrorIndicationreturnedforsymbolchangedinvalid'
 
@@ -46,7 +50,7 @@ def getHistStockData(symbol, startDate, endDate):
     jsonResp = urllib.request.urlopen(url).read().decode(encoding='UTF-8')
 
     try:
-        data = json.loads(jsonResp)["query"]["results"]["quote"]
+        data = json.loads(jsonResp)['query']['results']['quote']
     except:
         return None
 
@@ -63,7 +67,7 @@ def getCurrentStockData(symbol):
     jsonResp = urllib.request.urlopen(url).read().decode(encoding='UTF-8')
 
     try:
-        data = json.loads(jsonResp)["query"]["results"]["quote"]
+        data = json.loads(jsonResp)['query']['results']['quote']
     except:
         return None
 
@@ -81,6 +85,9 @@ def pfolio():
     totalValue = 0
     with open(PFOLIO_FILE_PATH) as dataFile:
         pfolioData = json.load(dataFile)
+
+    tagToVal = Counter()
+
     for position in pfolioData['positions']:
         posQuote = getCurrentStockData(position['symbol'])
         if posQuote:
@@ -89,7 +96,12 @@ def pfolio():
             position['price'] = price
             position['value'] = positionValue
             totalValue += positionValue
+            for tag in position['tags']:
+                tagToVal[tag] += positionValue
     pfolioData['totalValue'] = totalValue
+    tagToValOrd = OrderedDict((t , tagToVal[t]) for t in SELECTED_TAGS)
+    tagToValOrd.update(sorted(tagToVal.items(), key=itemgetter(0)))
+    pfolioData['tagValues'] = tagToValOrd
     return render_template('pfolio.html', data=pfolioData)
 
 @app.route('/')

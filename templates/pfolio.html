@@ -26,6 +26,16 @@
 {% endfor %}
 </table>
 
+<table>
+{% for tag, value in data['tagValues'].items()  %}
+    <tr>
+    <td>{{ tag }}</td>
+    <td class="numericCol">${{ '{:.2f}'.format(value) }}</td>
+    <td class="numericCol">{{ '{:.2%}'.format(value / data['totalValue']) }}</td>
+    </tr>
+{% endfor %}
+</table>
+
 <p>
 
 </p>
