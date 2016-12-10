@@ -6,7 +6,7 @@
     "tags": ["gold_silver", "gold", "commodities"]
 }, {
     "symbol": "SLW",
-    "count": 200,
+    "count": 264,
     "tags": ["gold_silver", "silver", "mining", "stocks"]
 }, {
     "symbol": "VWO",
@@ -41,9 +41,9 @@
     "count": 200,
     "tags": ["gold_silver", "gold", "mining", "stocks"]
 }, {
-    "symbol": "IBM",
-    "count": 12,
-    "tags": ["US", "technology", "stocks"]
+    "symbol": "EMLC",
+    "count": 100,
+    "tags": ["emerging", "bonds"]
 }, {
     "symbol": "VEA",
     "count": 90,
