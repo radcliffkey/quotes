@@ -33,9 +33,10 @@
     "count": 36,
     "tags": ["real_estate", "health", "stocks"]
 }, {
-    "symbol": "DSUM",
-    "count": 60,
-    "tags": ["China", "bonds"]
+    "symbol": "IGLT.L",
+    "count": 100,
+    "currency": "GBP",
+    "tags": ["UK", "bonds"]
 }, {
     "symbol": "GDX",
     "count": 200,

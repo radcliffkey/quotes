@@ -92,6 +92,13 @@ def pfolio():
         posQuote = getCurrentStockData(position['symbol'])
         if posQuote:
             price = float(posQuote['LastTradePriceOnly'])
+
+            if 'currency' in position:
+                ccySymbol = position['currency'] + '=X'
+                ccyQuote = getCurrentStockData(ccySymbol)
+                ccyUsd = 1.0 / float(ccyQuote['LastTradePriceOnly'])
+                price *= ccyUsd
+
             positionValue = position['count'] * price
             position['price'] = price
             position['value'] = positionValue
@@ -99,6 +106,7 @@ def pfolio():
             for tag in position['tags']:
                 tagToVal[tag] += positionValue
     pfolioData['totalValue'] = totalValue
+
     tagToValOrd = OrderedDict((t , tagToVal[t]) for t in SELECTED_TAGS)
     tagToValOrd.update(sorted(tagToVal.items(), key=itemgetter(0)))
     pfolioData['tagValues'] = tagToValOrd
@@ -128,7 +136,6 @@ def quote(symbol='KO'):
     else:
         histPrices = [float(dayData['Close']) for dayData in histData]
         daysToDma = {cnt : (avg(histPrices[:cnt])) for cnt in [20, 50, 100, 200]}
-        app.logger.error(daysToDma)
         dmaDiffPct = {cnt : 100 * (currPrice - dmaVal) / dmaVal for (cnt, dmaVal) in daysToDma.items()}
 
     debug = {}
