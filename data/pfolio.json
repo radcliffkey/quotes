@@ -33,6 +33,10 @@
     "count": 100,
     "tags": ["emerging", "Brazil", "small_cap", "stocks"]
 }, {
+    "symbol": "MXF",
+    "count": 100,
+    "tags": ["emerging", "Mexico", "stocks"]
+}, {
     "symbol": "VEA",
     "count": 90,
     "tags": ["developed", "stocks"]
