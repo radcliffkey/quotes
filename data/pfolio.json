@@ -33,10 +33,6 @@
     "count": 100,
     "tags": ["emerging", "Brazil", "small_cap", "stocks"]
 }, {
-    "symbol": "MXF",
-    "count": 100,
-    "tags": ["emerging", "Mexico", "stocks"]
-}, {
     "symbol": "VEA",
     "count": 90,
     "tags": ["developed", "stocks"]
@@ -53,10 +49,6 @@
     "count": 28,
     "tags": ["ex_US", "small_cap", "stocks"]
 }, {
-    "symbol": "AUNZ",
-    "count": 220,
-    "tags": ["Australia", "New_Zealand", "bonds"]
-}, {
     "symbol": "IGLT.L",
     "count": 100,
     "currency": "GBP",
@@ -67,8 +59,8 @@
     "tags": ["emerging", "bonds"]
 }, {
     "symbol": "BOND",
-    "count": 33,
-    "tags": ["active_fund", "bonds"]
+    "count": 40,
+    "tags": ["active_fund", "bonds", "US"]
 }, {
     "symbol": "VNQI",
     "count": 64,
@@ -81,6 +73,14 @@
     "symbol": "URA",
     "count": 120,
     "tags": ["uranium", "mining", "stocks", "commodities"]
+}, {
+    "symbol": "HA",
+    "count": 34,
+    "tags": ["US", "stocks", "airlines"]
+}, {
+    "symbol": "IBM",
+    "count": 10,
+    "tags": ["US", "stocks", "technology"]
 }
 ]
 }
